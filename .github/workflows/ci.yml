@@ -74,7 +74,7 @@ jobs:
 
       - name: Upload Test Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: |
@@ -87,7 +87,7 @@ jobs:
 
       - name: Upload Coverage Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-reports
           path: target/site/jacoco/
@@ -127,7 +127,7 @@ jobs:
 
       - name: Upload Quality Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: quality-reports
           path: target/
@@ -154,7 +154,7 @@ jobs:
 
       - name: Upload Security Report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: security-reports
           path: target/dependency-check-report.html
@@ -196,7 +196,7 @@ jobs:
         run: docker save furniture-api:${{ github.sha }} | gzip > furniture-api.tar.gz
 
       - name: Upload Docker Image Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docker-image
           path: furniture-api.tar.gz
@@ -214,4 +214,5 @@ jobs:
           echo "Build and Test: ${{ needs.build-and-test.result }}"
           echo "Code Quality: ${{ needs.code-quality.result }}"
           echo "Security Scan: ${{ needs.security-scan.result }}"
+
 
