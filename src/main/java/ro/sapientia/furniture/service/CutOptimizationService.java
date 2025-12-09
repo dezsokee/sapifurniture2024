@@ -1,7 +1,5 @@
 package ro.sapientia.furniture.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ro.sapientia.furniture.exception.CutOptimizationException;
@@ -9,6 +7,7 @@ import ro.sapientia.furniture.model.dto.CutRequestDTO;
 import ro.sapientia.furniture.model.dto.CutResponseDTO;
 import ro.sapientia.furniture.model.dto.FurnitureBodyDTO;
 import ro.sapientia.furniture.model.dto.PlacedElementDTO;
+import ro.sapientia.furniture.util.AppLogger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,7 +20,7 @@ import java.util.List;
 @Service
 public class CutOptimizationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CutOptimizationService.class);
+    private static final AppLogger logger = AppLogger.getLogger(CutOptimizationService.class);
 
     /**
      * Internal class to track occupied areas on the sheet.
