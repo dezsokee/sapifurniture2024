@@ -2,6 +2,8 @@ package ro.sapientia.furniture.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,13 +45,13 @@ public class FurnitureController {
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<FurnitureBodyDTO> addFurnitureBody(@RequestBody FurnitureBodyDTO furnitureBodyDTO){
+	public ResponseEntity<FurnitureBodyDTO> addFurnitureBody(@Valid @RequestBody FurnitureBodyDTO furnitureBodyDTO){
 		final FurnitureBodyDTO persistenFurnitureBodyDTO = furnitureBodyService.create(furnitureBodyDTO);
 		return new ResponseEntity<>(persistenFurnitureBodyDTO,HttpStatus.CREATED);
 	}
 
 	@PostMapping("/update")
-	public ResponseEntity<FurnitureBodyDTO> updateFurnitureBody(@RequestBody FurnitureBodyDTO furnitureBodyDTO){
+	public ResponseEntity<FurnitureBodyDTO> updateFurnitureBody(@Valid @RequestBody FurnitureBodyDTO furnitureBodyDTO){
 		final FurnitureBodyDTO persistenFurnitureBodyDTO = furnitureBodyService.update(furnitureBodyDTO);
 		return new ResponseEntity<>(persistenFurnitureBodyDTO,HttpStatus.OK);
 	}
@@ -61,7 +63,7 @@ public class FurnitureController {
 	}
 
 	@PostMapping("/cut")
-	public ResponseEntity<CutResponseDTO> optimizeCut(@RequestBody CutRequestDTO cutRequestDTO){
+	public ResponseEntity<CutResponseDTO> optimizeCut(@Valid @RequestBody CutRequestDTO cutRequestDTO){
 		final CutResponseDTO cutResponseDTO = cutOptimizationService.optimizeCutting(cutRequestDTO);
 		return new ResponseEntity<>(cutResponseDTO, HttpStatus.OK);
 	}
