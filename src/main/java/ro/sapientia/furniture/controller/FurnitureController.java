@@ -18,10 +18,13 @@ import ro.sapientia.furniture.model.dto.CutResponseDTO;
 import ro.sapientia.furniture.model.dto.FurnitureBodyDTO;
 import ro.sapientia.furniture.service.CutOptimizationService;
 import ro.sapientia.furniture.service.FurnitureBodyService;
+import ro.sapientia.furniture.util.AppLogger;
 
 @RestController
 @RequestMapping("/furniture")
 public class FurnitureController {
+
+	private static final AppLogger logger = AppLogger.getLogger(FurnitureController.class);
 
 	private final FurnitureBodyService furnitureBodyService;
 	private final CutOptimizationService cutOptimizationService;
