@@ -12,6 +12,8 @@ import ro.sapientia.furniture.model.dto.PlacedElementDTO;
 import ro.sapientia.furniture.model.entities.CuttingSheet;
 import ro.sapientia.furniture.model.entities.PlacedElement;
 import ro.sapientia.furniture.repository.CuttingSheetRepository;
+import ro.sapientia.furniture.repository.FurnitureBodyRepository;
+
 import ro.sapientia.furniture.util.AppLogger;
 
 import java.util.ArrayList;
@@ -27,9 +29,12 @@ public class CutOptimizationService {
 
     private static final AppLogger logger = AppLogger.getLogger(CutOptimizationService.class);
 
+    private final FurnitureBodyRepository furnitureBodyRepository;
+
     private final CuttingSheetRepository cuttingSheetRepository;
-    public CutOptimizationService(CuttingSheetRepository cuttingSheetRepository) {
+    public CutOptimizationService(CuttingSheetRepository cuttingSheetRepository, FurnitureBodyRepository furnitureBodyRepository) {
         this.cuttingSheetRepository = cuttingSheetRepository;
+        this.furnitureBodyRepository = furnitureBodyRepository;
     }
 
     /**
@@ -231,7 +236,13 @@ public class CutOptimizationService {
         for(PlacedElementDTO dto: placements) {
             PlacedElement entity = new PlacedElement();
 
-            entity.setFurnitureBodyId(dto.getId());
+            Long incomingId = dto.getId();
+
+            if (incomingId != null && furnitureBodyRepository.existsById(incomingId)) {
+                entity.setFurnitureBodyId(incomingId);
+            } else {
+                entity.setFurnitureBodyId(null);
+            }
 
             entity.setX(dto.getX());
             entity.setY(dto.getY());
