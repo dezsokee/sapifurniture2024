@@ -3,6 +3,8 @@ package ro.sapientia.furniture.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,6 +21,7 @@ import ro.sapientia.furniture.model.dto.CutResponseDTO;
 import ro.sapientia.furniture.model.dto.FurnitureBodyDTO;
 import ro.sapientia.furniture.model.dto.PlacedElementDTO;
 import ro.sapientia.furniture.repository.CuttingSheetRepository;
+import ro.sapientia.furniture.repository.FurnitureBodyRepository;
 
 public class CutOptimizationServiceTest {
 
@@ -27,10 +30,14 @@ public class CutOptimizationServiceTest {
     @Mock
     private CuttingSheetRepository cuttingSheetRepository;
 
+    @Mock
+    private FurnitureBodyRepository furnitureBodyRepository;
+
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
-        service = new CutOptimizationService(cuttingSheetRepository);
+        when(furnitureBodyRepository.existsById(any())).thenReturn(true);
+        service = new CutOptimizationService(cuttingSheetRepository, furnitureBodyRepository);
     }
 
     @Test
