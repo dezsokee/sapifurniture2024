@@ -1,5 +1,7 @@
 package ro.sapientia.furniture.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ro.sapientia.furniture.exception.CutOptimizationException;
@@ -7,6 +9,9 @@ import ro.sapientia.furniture.model.dto.CutRequestDTO;
 import ro.sapientia.furniture.model.dto.CutResponseDTO;
 import ro.sapientia.furniture.model.dto.FurnitureBodyDTO;
 import ro.sapientia.furniture.model.dto.PlacedElementDTO;
+import ro.sapientia.furniture.model.entities.CuttingSheet;
+import ro.sapientia.furniture.model.entities.PlacedElement;
+import ro.sapientia.furniture.repository.CuttingSheetRepository;
 import ro.sapientia.furniture.util.AppLogger;
 
 import java.util.ArrayList;
@@ -21,6 +26,11 @@ import java.util.List;
 public class CutOptimizationService {
 
     private static final AppLogger logger = AppLogger.getLogger(CutOptimizationService.class);
+
+    private final CuttingSheetRepository cuttingSheetRepository;
+    public CutOptimizationService(CuttingSheetRepository cuttingSheetRepository) {
+        this.cuttingSheetRepository = cuttingSheetRepository;
+    }
 
     /**
      * Internal class to track occupied areas on the sheet.
@@ -211,6 +221,30 @@ public class CutOptimizationService {
                 logger.debug("Element {} placed with rotation", element.getId());
             }
         }
+
+        CuttingSheet sheet = new CuttingSheet();
+        sheet.setWidth(sheetWidth);
+        sheet.setHeight(sheetHeight);
+
+        List<PlacedElement> placedEntities = new ArrayList<>();
+
+        for(PlacedElementDTO dto: placements) {
+            PlacedElement entity = new PlacedElement();
+
+            entity.setFurnitureBodyId(dto.getId());
+
+            entity.setX(dto.getX());
+            entity.setY(dto.getY());
+            entity.setWidth(dto.getWidth());
+            entity.setHeight(dto.getHeight());
+
+            entity.setCuttingSheet(sheet);
+            placedEntities.add(entity);
+            logger.debug("Saving placement: FurnitureID={} at X={}, Y={}", dto.getId(), dto.getX(), dto.getY());
+        }
+        sheet.setPlacedElements(placedEntities);
+
+        cuttingSheetRepository.save(sheet);
 
         return placements;
     }

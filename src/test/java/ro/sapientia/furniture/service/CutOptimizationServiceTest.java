@@ -11,19 +11,26 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import ro.sapientia.furniture.exception.CutOptimizationException;
 import ro.sapientia.furniture.model.dto.CutRequestDTO;
 import ro.sapientia.furniture.model.dto.CutResponseDTO;
 import ro.sapientia.furniture.model.dto.FurnitureBodyDTO;
 import ro.sapientia.furniture.model.dto.PlacedElementDTO;
+import ro.sapientia.furniture.repository.CuttingSheetRepository;
 
 public class CutOptimizationServiceTest {
 
     private CutOptimizationService service;
 
+    @Mock
+    private CuttingSheetRepository cuttingSheetRepository;
+
     @BeforeEach
     void setup() {
-        service = new CutOptimizationService();
+        MockitoAnnotations.openMocks(this);
+        service = new CutOptimizationService(cuttingSheetRepository);
     }
 
     @Test
